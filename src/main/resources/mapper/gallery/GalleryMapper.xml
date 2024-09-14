@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.code.bootapp.gallery.mapper.GalleryMapper">
+
+    <insert id="insertGallery" parameterType="galleryRequest">
+
+        insert into gall_info(title, writer, file_name, file_stored_name, file_path,
+                              thumb_file_name, thumb_file_path)
+        values (#{title}, #{writer}, #{fileName}, #{fileStoredName},
+                #{filePath}, #{thumbFileName}, #{thumbFilePath} )
+
+    </insert>
+
+    <select id="getGalleryTotal" parameterType="java.util.Map" resultType="int">
+        select count(seq) as cnt
+        from gall_info
+    </select>
+
+    <select id="getGalleryList" parameterType="java.util.Map"  resultType="response">
+        select seq,
+               title,
+               writer,
+               file_name,
+               file_stored_name,
+               file_path,
+               thumb_file_name,
+               thumb_file_path,
+               date_format(create_date, '%Y-%m-%d %H:%i:%s') as create_date
+        from gall_info
+        order by seq desc
+            limit #{start}, #{end}
+
+    </select>
+
+    <select id="getGallery" parameterType="java.util.Map"  resultType="response">
+        select seq,
+               title,
+               writer,
+               file_name,
+               file_stored_name,
+               file_path,
+               thumb_file_name,
+               thumb_file_path,
+               date_format(create_date, '%Y-%m-%d %H:%i:%s') as create_date
+        from gall_info
+        where seq = #{seq}
+
+    </select>
+
+    <update id="updateGallery" parameterType="galleryRequest">
+        update gall_info
+        <set>
+            <if test ="title neq null and title neq '' ">
+                title = #{title},
+            </if>
+            <if test ="fileName neq null and fileName neq '' ">
+                file_name = #{fileName},
+            </if>
+            <if test ="fileStoredName neq null and fileStoredName neq '' ">
+                file_stored_name = #{fileStoredName},
+            </if>
+            <if test ="filePath neq null and filePath neq '' ">
+                file_path = #{filePath},
+            </if>
+            <if test ="thumbFileName neq null and thumbFileName neq '' ">
+                thumb_file_name = #{thumbFileName},
+            </if>
+            <if test ="thumbFilePath neq null and thumbFilePath neq '' ">
+                thumb_file_path = #{thumbFilePath},
+            </if>
+            update_date = now()
+        </set>
+        where seq =#{seq}
+    </update>
+
+    <delete id="deleteGallery" parameterType="java.util.Map" >
+        delete from gall_info
+        where seq in
+        <foreach collection="deleteTargets" item="item"
+                 separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        <!-- delete from gall_info where  seq in  (1,2,3,); -->
+    </delete>
+
+
+</mapper>

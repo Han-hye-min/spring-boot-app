@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<!-- 공통으로 사용할 css 나 js 를 링크하는 목적 페이지  -->
+
+<th:block th:fragment="config">
+    <link rel="stylesheet" href="/webjars/bootstrap/4.6.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/webjars/font-awesome/6.5.2/css/all.css">
+    <script src="/webjars/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/webjars/bootstrap/4.6.2/js/bootstrap.js"></script>
+
+    <!--각 content 에서 사용하는 css 를 적용할 부분 -->
+    <th:block layout:fragment="css"></th:block>
+
+</th:block>
+
+</html>
